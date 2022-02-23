@@ -1,22 +1,33 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-
+import { RoomsModule } from './rooms/rooms.module';
+import { Room } from './rooms/rooms.model';
+import { LocationsService } from './locations/locations.service';
+import { LocationsController } from './locations/locations.controller';
+import { LocationsModule } from './locations/locations.module';
+import { Location } from './locations/locations.model';
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      envFilePath: '.env',
+    }),
     SequelizeModule.forRoot({
       dialect: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: 'root',
-      database: 'postgres',
-      models: [],
+      host: process.env.POSTGRES_HOST,
+      port: Number(process.env.POSTGRES_PORT),
+      username: process.env.POSTGRES_USERNAME,
+      password: process.env.POSTGRES_PASSWORD,
+      database: process.env.POSTGRES_DB,
+      models: [Room, Location],
       autoLoadModels: true,
     }),
+    RoomsModule,
+    LocationsModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, LocationsController],
   providers: [AppService],
 })
 export class AppModule {}
@@ -26,6 +37,7 @@ export class AppModule {}
 // locations pk
 // city
 // country
+// location -- one to many --> room
 
 // room_id pk
 // number
