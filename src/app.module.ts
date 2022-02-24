@@ -5,10 +5,14 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { RoomsModule } from './rooms/rooms.module';
 import { Room } from './rooms/rooms.model';
-import { LocationsService } from './locations/locations.service';
 import { LocationsController } from './locations/locations.controller';
 import { LocationsModule } from './locations/locations.module';
 import { Location } from './locations/locations.model';
+import { RoomTypesService } from './room-types/room-types.service';
+import { RoomTypesController } from './room-types/room-types.controller';
+import { RoomTypesModule } from './room-types/room-types.module';
+import { ReservedRoomsService } from './reserved-rooms/reserved-rooms.service';
+import { ReservedRoomsController } from './reserved-rooms/reserved-rooms.controller';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -26,34 +30,43 @@ import { Location } from './locations/locations.model';
     }),
     RoomsModule,
     LocationsModule,
+    RoomTypesModule,
   ],
-  controllers: [AppController, LocationsController],
-  providers: [AppService],
+  controllers: [
+    AppController,
+    LocationsController,
+    RoomTypesController,
+    ReservedRoomsController,
+  ],
+  providers: [AppService, RoomTypesService, ReservedRoomsService],
 })
 export class AppModule {}
 
 // data model
 
-// locations pk
+// locations pk +
 // city
 // country
 // location -- one to many --> room
 
-// room_id pk
+// room_id pk +
 // number
 // room_type fk
 // location fk
 
-// room_type
+// room_types +
 // id pk
 // cost
 // name
 // max_capacity
 
-// reservation_id
+// reserved_rooms +
+
+// reservations +
+// _id
 // date_in, date_out, status (confirmed)
 
-// occupied_room
+// occupied_rooms +
 // check_in
 // check_out
 // room_id fk
